@@ -17,16 +17,25 @@ global currentState := 0
 {
     global currentState
 
-    if (currentState = 0) {
-        ; Fondu Chrome -> Edge
-        TrayTip("Fondu Chrome → Edge")
-        Fade(appAExe, appBExe)
-        currentState := 1
-    } else {
-        ; Fondu Edge -> Chrome
-        TrayTip("Fondu Edge → Chrome")
-        Fade(appBExe, appAExe)
-        currentState := 0
+    if !IsRunning("chrome.exe") || !IsRunning("msedge.exe") {
+        TrayTip("Applications manquantes", "Chrome et/ou Edge ne sont pas lancés.", 2)
+	Sleep 3000
+    }
+    else
+    {
+        if (currentState = 0) {
+            ; Fondu Chrome -> Edge
+            TrayTip("Fondu" ,"Chrome → Edge", 1)
+            Fade(appAExe, appBExe)
+            currentState := 1
+            TrayTip()
+        } else {
+            ; Fondu Edge -> Chrome
+            TrayTip("Fondu", "Chrome ← Edge", 1)
+            Fade(appBExe, appAExe)
+            currentState := 0
+
+        }
     }
     TrayTip()
 }
@@ -53,4 +62,12 @@ SetAppVolume(exeName, level)
     vol := level * 100
 
     AppVol(exeName, vol)
+}
+
+IsRunning(exeName) {
+    try {
+        return ProcessExist(exeName) != 0
+    } catch {
+        return false
+    }
 }
