@@ -19,13 +19,16 @@ global currentState := 0
 
     if (currentState = 0) {
         ; Fondu Chrome -> Edge
+        TrayTip("Fondu Chrome → Edge")
         Fade(appAExe, appBExe)
         currentState := 1
     } else {
         ; Fondu Edge -> Chrome
+        TrayTip("Fondu Edge → Chrome")
         Fade(appBExe, appAExe)
         currentState := 0
     }
+    TrayTip()
 }
 
 Fade(fromExe, toExe)
